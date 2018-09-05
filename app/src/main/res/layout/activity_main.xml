@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_categoria" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerGenero"
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+        <TextView
+            android:id="@+id/txtPlaylists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_playlist" />
+
+        <TextView
+            android:id="@+id/txtMusicas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_musicas" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleMusicas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

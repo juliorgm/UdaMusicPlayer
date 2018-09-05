@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">UdaMusicPlayer</string>
+    <string name="main_categoria">Categoria</string>
+    <string name="main_playlist">Playlist</string>
+    <string name="main_musicas">Músicas</string>
+</resources>

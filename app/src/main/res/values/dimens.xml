@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_musica_imagem">85dp</dimen>
+    <dimen name="size_musica_titulo">24sp</dimen>
+    <dimen name="size_musica_texto">16sp</dimen>
+    <dimen name="size_musica_lista_categorias">40dp</dimen>
+</resources>
