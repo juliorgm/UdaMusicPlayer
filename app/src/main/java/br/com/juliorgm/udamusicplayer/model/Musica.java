@@ -1,15 +1,21 @@
 package br.com.juliorgm.udamusicplayer.model;
 
-public class Musica {
+import java.io.Serializable;
+import br.com.juliorgm.udamusicplayer.R;
+
+public class Musica implements Serializable{
 
     private String mMusica, mArtista, mGenero;
+
     private int mImagemId;
 
     public Musica(String mMusica, String mArtista, String mGenero, int mImagemId) {
         this.mMusica = mMusica;
         this.mArtista = mArtista;
         this.mGenero = mGenero;
-        this.mImagemId = mImagemId;
+
+        if (mImagemId ==1)this.mImagemId = R.drawable.ic_unnamed;
+        else this.mImagemId = mImagemId;
     }
 
     public String getmMusica() {

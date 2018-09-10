@@ -8,8 +8,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,24 +21,34 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/txtPlaylists"
+            style="@style/main_titulos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_playlist" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerPlaylist"
+            style="@style/main_lista_horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp" />
+
+        <TextView
             android:id="@+id/txtCategorias"
+            style="@style/main_titulos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/main_categoria" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerGenero"
+            style="@style/main_lista_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp" />
-
-        <TextView
-            android:id="@+id/txtPlaylists"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/main_playlist" />
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/txtMusicas"
+            style="@style/main_titulos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/main_musicas" />
@@ -42,7 +56,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleMusicas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

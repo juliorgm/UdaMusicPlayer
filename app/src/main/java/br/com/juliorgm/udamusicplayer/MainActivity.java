@@ -1,22 +1,26 @@
 package br.com.juliorgm.udamusicplayer;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import br.com.juliorgm.udamusicplayer.Adapter.GeneroAdapter;
-import br.com.juliorgm.udamusicplayer.Adapter.MusicaAdapter;
+import br.com.juliorgm.udamusicplayer.adapter.GeneroAdapter;
+import br.com.juliorgm.udamusicplayer.adapter.MusicaAdapter;
+import br.com.juliorgm.udamusicplayer.adapter.PlaylistAdapter;
+import br.com.juliorgm.udamusicplayer.interfaces.ItemClickListener;
 import br.com.juliorgm.udamusicplayer.model.Musica;
+import br.com.juliorgm.udamusicplayer.model.Playlist;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerViewMusicas, mRecyclerViewGeneros, mRecyclerViewPlaylists;
-    private RecyclerView.Adapter mAdapter, mAdapterGenero;
-    private ArrayList<Musica> mListaMusicas;
+    private GeneroAdapter mAdapterGenero;
+    private MusicaAdapter mMusicaAdapter;
+    private PlaylistAdapter mPlaylistAdapter;
+    private ArrayList<Musica> mListaMusicas, mListaPlaylistMusica;
+    private ArrayList<Playlist> mListaPlaylists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
         carregaLista();
         carregaGenero();
+        carregaPlaylists();
     }
 
     private void carregaLista(){
 
         mListaMusicas = new ArrayList<>();
-
+        mListaMusicas.add(new Musica("Sweet Child O' Mine","Guns N'Roses","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Sweet Child O' Mine", "Guns N'Roses","Rock", R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Gostava Tanto de Você","Titãs","Rock",R.drawable.sweet_child));
-        mListaMusicas.add(new Musica("Go Back","Titãs","Rock",R.drawable.sweet_child));
+        mListaMusicas.add(new Musica("Go Back","Titãs","Rock",1));
         mListaMusicas.add(new Musica("Flores","Titãs","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Família","Titãs","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Resposta","Skank","Pop",R.drawable.sweet_child));
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         mListaMusicas.add(new Musica("Chocolate","Marisa Monte","MPB",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("De Noite Na Cama","Marisa Monte","MPB",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("O Xote Das Meninas - Severina Xique Xique","Marisa Monte","MPB",R.drawable.sweet_child));
-        mListaMusicas.add(new Musica("Você","Os Paralamas Do Sucesso","Rock",R.drawable.sweet_child));
+        mListaMusicas.add(new Musica("Você","Os Paralamas Do Sucesso","Rock",1));
         mListaMusicas.add(new Musica("Fogo","Capital Inicial","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("A Novidade","Os Paralamas Do Sucesso","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Aonde Quer Que Eu Vá","Os Paralamas Do Sucesso","Rock",R.drawable.sweet_child));
@@ -160,16 +165,31 @@ public class MainActivity extends AppCompatActivity {
         mListaMusicas.add(new Musica("Musica Urbana","Capital Inicial","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Rolam as Pedras","Kiko Zambianchi","Rock",R.drawable.sweet_child));
 
+
         mRecyclerViewMusicas = findViewById(R.id.recycleMusicas);
         mRecyclerViewMusicas.setHasFixedSize(true);
         mRecyclerViewMusicas.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MusicaAdapter(this, mListaMusicas);
-        mRecyclerViewMusicas.setAdapter(mAdapter);
+        mMusicaAdapter = new MusicaAdapter(this, mListaMusicas);
+        mRecyclerViewMusicas.setAdapter(mMusicaAdapter);
+
+        mMusicaAdapter.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                intent.putExtra("MUSICA",mListaMusicas);
+                intent.putExtra("TITULO",getApplicationContext().getString(R.string.main_musicas_todas));
+
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 
     private void carregaGenero(){
 
-        ArrayList<String> listaGeneros = new ArrayList<>();
+        final ArrayList<String> listaGeneros = new ArrayList<>();
         listaGeneros.add(mListaMusicas.get(0).getmGenero());
         for (Musica m:mListaMusicas) {
             if (!listaGeneros.contains(m.getmGenero())){
@@ -179,10 +199,113 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerViewGeneros = findViewById(R.id.recyclerGenero);
         mRecyclerViewGeneros.setHasFixedSize(true);
-        mRecyclerViewGeneros.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewGeneros.setLayoutManager(layoutManager);
         mAdapterGenero = new GeneroAdapter(this,listaGeneros);
+
         mRecyclerViewGeneros.setAdapter(mAdapterGenero);
+
+        mAdapterGenero.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                intent.putExtra("MUSICA",filtraMusicas(listaGeneros.get(position)));
+                intent.putExtra("TITULO",listaGeneros.get(position));
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
+    private ArrayList<Musica> filtraMusicas(String filtro){
+        ArrayList<Musica> array = new ArrayList<>();
 
+        for (Musica m:mListaMusicas) {
+            if (m.getmGenero().equals(filtro))array.add(m);
+        }
+        return array;
+    }
+
+    private void carregaPlaylists(){
+        mRecyclerViewPlaylists = findViewById(R.id.recyclerPlaylist);
+        mRecyclerViewPlaylists.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewPlaylists.setLayoutManager(layoutManager);
+        PlaylistAdapter adapter = new PlaylistAdapter(this,geraPlaylist());
+        mRecyclerViewPlaylists.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+                intent.putExtra("MUSICA",mListaPlaylistMusica);
+                intent.putExtra("TITULO",mListaPlaylists.get(0).getmNomePlaylist());
+
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    private ArrayList<Playlist> geraPlaylist(){
+        mListaPlaylists = new ArrayList<>();
+        mListaPlaylistMusica = new ArrayList<>();
+
+        mListaPlaylistMusica.add(mListaMusicas.get(1));
+        mListaPlaylistMusica.add(mListaMusicas.get(3));
+        mListaPlaylistMusica.add(mListaMusicas.get(5));
+        mListaPlaylistMusica.add(mListaMusicas.get(7));
+        mListaPlaylistMusica.add(mListaMusicas.get(9));
+        mListaPlaylistMusica.add(mListaMusicas.get(11));
+        mListaPlaylists.add(new Playlist("Musicas Legais",mListaPlaylistMusica,R.drawable.sweet_child));
+
+        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica.add(mListaMusicas.get(12));
+        mListaPlaylistMusica.add(mListaMusicas.get(3));
+        mListaPlaylistMusica.add(mListaMusicas.get(29));
+        mListaPlaylistMusica.add(mListaMusicas.get(15));
+        mListaPlaylistMusica.add(mListaMusicas.get(94));
+        mListaPlaylistMusica.add(mListaMusicas.get(51));
+        mListaPlaylists.add(new Playlist("Curtição",mListaPlaylistMusica,R.drawable.sweet_child));
+
+        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica.add(mListaMusicas.get(6));
+        mListaPlaylistMusica.add(mListaMusicas.get(12));
+        mListaPlaylistMusica.add(mListaMusicas.get(18));
+        mListaPlaylistMusica.add(mListaMusicas.get(14));
+        mListaPlaylistMusica.add(mListaMusicas.get(92));
+        mListaPlaylistMusica.add(mListaMusicas.get(50));
+        mListaPlaylists.add(new Playlist("Sei lá",mListaPlaylistMusica,R.drawable.sweet_child));
+
+        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica.add(mListaMusicas.get(3));
+        mListaPlaylistMusica.add(mListaMusicas.get(32));
+        mListaPlaylistMusica.add(mListaMusicas.get(38));
+        mListaPlaylistMusica.add(mListaMusicas.get(34));
+        mListaPlaylistMusica.add(mListaMusicas.get(32));
+        mListaPlaylistMusica.add(mListaMusicas.get(30));
+        mListaPlaylists.add(new Playlist("Meu som",mListaPlaylistMusica,R.drawable.sweet_child));
+
+
+        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica.add(mListaMusicas.get(7));
+        mListaPlaylistMusica.add(mListaMusicas.get(72));
+        mListaPlaylistMusica.add(mListaMusicas.get(78));
+        mListaPlaylistMusica.add(mListaMusicas.get(74));
+        mListaPlaylistMusica.add(mListaMusicas.get(72));
+        mListaPlaylistMusica.add(mListaMusicas.get(70));
+        mListaPlaylists.add(new Playlist("Weekend",mListaPlaylistMusica,R.drawable.sweet_child));
+
+        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica.add(mListaMusicas.get(2));
+        mListaPlaylistMusica.add(mListaMusicas.get(22));
+        mListaPlaylistMusica.add(mListaMusicas.get(28));
+        mListaPlaylistMusica.add(mListaMusicas.get(24));
+        mListaPlaylistMusica.add(mListaMusicas.get(22));
+        mListaPlaylistMusica.add(mListaMusicas.get(20));
+        mListaPlaylists.add(new Playlist("Hardwork",mListaPlaylistMusica,R.drawable.sweet_child));
+
+        return mListaPlaylists;
+    }
 }

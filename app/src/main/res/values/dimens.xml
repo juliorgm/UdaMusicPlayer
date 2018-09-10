@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="size_musica_imagem">85dp</dimen>
+    <dimen name="size_musica_lista_categorias">40dp</dimen>
+    <dimen name="size_generos_musicais">120dp</dimen>
+    <dimen name="main_size_lista_horizontal">150dp</dimen>
+    <dimen name="size_padding_padrao">8dp</dimen>
+
+
     <dimen name="size_musica_titulo">24sp</dimen>
     <dimen name="size_musica_texto">16sp</dimen>
-    <dimen name="size_musica_lista_categorias">40dp</dimen>
+
 </resources>
