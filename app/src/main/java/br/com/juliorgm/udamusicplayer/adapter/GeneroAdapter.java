@@ -36,8 +36,6 @@ public class GeneroAdapter extends RecyclerView.Adapter<GeneroAdapter.ViewHolder
         holder.itemGenero.setText(mListaGenero.get(position));
     }
 
-
-
     @Override
     public int getItemCount() {
         return mListaGenero.size();

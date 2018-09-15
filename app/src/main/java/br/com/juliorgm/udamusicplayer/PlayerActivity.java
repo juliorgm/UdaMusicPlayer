@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import br.com.juliorgm.udamusicplayer.adapter.PlayerAdapter;
 import br.com.juliorgm.udamusicplayer.model.Musica;
@@ -24,8 +26,8 @@ public class PlayerActivity extends AppCompatActivity {
     private boolean mPlay;
     private Musica mMusicaAtual;
     private int mPosicao;
-    PagerSnapHelper snapHelper;
-    RecyclerView.LayoutManager layoutManager;
+    private PagerSnapHelper snapHelper;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +43,12 @@ public class PlayerActivity extends AppCompatActivity {
         cliqueBotoes();
     }
 
-    private void pegaMusicaAtual(int posicao) {
-        mMusicaAtual = mLista.get(posicao);
-    }
-
-    private void carregaRecycler() {
-        mRecyclerViewMusicas.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewMusicas.setLayoutManager(layoutManager);
-        mAdapter = new PlayerAdapter(this, mLista);
-        mRecyclerViewMusicas.setAdapter(mAdapter);
-
-        snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(mRecyclerViewMusicas);
+    private void pegaIntent() {
+        Intent intent = getIntent();
+        mLista = (ArrayList<Musica>) intent.getSerializableExtra(MainActivity.MAIN_LISTA_MUSICA);
+        mTxtTitutoPagina.setText(intent.getStringExtra(MainActivity.MAIN_TITULO));
+        pegaMusicaAtual();
+        carregaTextos();
     }
 
     private void carregaCampos() {
@@ -70,12 +65,15 @@ public class PlayerActivity extends AppCompatActivity {
         mBtnHome=findViewById(R.id.btnHome);
     }
 
-    private void pegaIntent() {
-        Intent intent = getIntent();
-        mLista = (ArrayList<Musica>) intent.getSerializableExtra("MUSICA");
-        mTxtTitutoPagina.setText(intent.getStringExtra("TITULO"));
-        pegaMusicaAtual(mPosicao);
-        carregaTextos();
+    private void carregaRecycler() {
+        mRecyclerViewMusicas.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerViewMusicas.setLayoutManager(layoutManager);
+        mAdapter = new PlayerAdapter(this, mLista);
+        mRecyclerViewMusicas.setAdapter(mAdapter);
+
+        snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(mRecyclerViewMusicas);
     }
 
     private void cliqueBotoes() {
@@ -120,22 +118,26 @@ public class PlayerActivity extends AppCompatActivity {
             public boolean onFling(int velocityX, int velocityY) {
                 mPosicao = snapHelper.findTargetSnapPosition(layoutManager,velocityX, velocityY);
                 atualizaMusica();
-
                 return true;
             }
         });
 
     }
-
+    private void pegaMusicaAtual() {
+        try {
+            mMusicaAtual = mLista.get(mPosicao);
+        }catch (Exception e){
+            mPosicao = 0;
+            mMusicaAtual = mLista.get(mPosicao);
+        }
+    }
     private void avancaMusica() {
-        if (mPosicao < mLista.size())mPosicao++;
-        else mPosicao = mLista.size();
-
+        mPosicao++;
         atualizaMusica();
     }
 
     private void atualizaMusica() {
-        pegaMusicaAtual(mPosicao);
+        pegaMusicaAtual();
         carregaTextos();
         mRecyclerViewMusicas.getLayoutManager().scrollToPosition(mPosicao);
     }

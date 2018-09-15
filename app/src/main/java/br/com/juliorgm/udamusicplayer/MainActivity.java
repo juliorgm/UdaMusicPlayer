@@ -2,9 +2,12 @@ package br.com.juliorgm.udamusicplayer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import br.com.juliorgm.udamusicplayer.adapter.GeneroAdapter;
 import br.com.juliorgm.udamusicplayer.adapter.MusicaAdapter;
@@ -18,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewMusicas, mRecyclerViewGeneros, mRecyclerViewPlaylists;
     private GeneroAdapter mAdapterGenero;
     private MusicaAdapter mMusicaAdapter;
-    private PlaylistAdapter mPlaylistAdapter;
     private ArrayList<Musica> mListaMusicas, mListaPlaylistMusica;
     private ArrayList<Playlist> mListaPlaylists;
+    public static String MAIN_TITULO = "TITULO";
+    public static String MAIN_LISTA_MUSICA = "LISTA_MUSICA";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         mListaMusicas.add(new Musica("Musica Urbana","Capital Inicial","Rock",R.drawable.sweet_child));
         mListaMusicas.add(new Musica("Rolam as Pedras","Kiko Zambianchi","Rock",R.drawable.sweet_child));
 
-
         mRecyclerViewMusicas = findViewById(R.id.recycleMusicas);
         mRecyclerViewMusicas.setHasFixedSize(true);
         mRecyclerViewMusicas.setLayoutManager(new LinearLayoutManager(this));
@@ -176,19 +180,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                intent.putExtra("MUSICA",mListaMusicas);
-                intent.putExtra("TITULO",getApplicationContext().getString(R.string.main_musicas_todas));
+                intent.putExtra(MAIN_LISTA_MUSICA,mListaMusicas);
+                intent.putExtra(MAIN_TITULO,getApplicationContext().getString(R.string.main_musicas_todas));
 
                 startActivity(intent);
                 finish();
             }
         });
-
-
     }
 
     private void carregaGenero(){
-
         final ArrayList<String> listaGeneros = new ArrayList<>();
         listaGeneros.add(mListaMusicas.get(0).getmGenero());
         for (Musica m:mListaMusicas) {
@@ -209,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                intent.putExtra("MUSICA",filtraMusicas(listaGeneros.get(position)));
-                intent.putExtra("TITULO",listaGeneros.get(position));
+                intent.putExtra(MAIN_LISTA_MUSICA,filtraMusicas(listaGeneros.get(position)));
+                intent.putExtra(MAIN_TITULO,listaGeneros.get(position));
 
                 startActivity(intent);
                 finish();
@@ -239,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                intent.putExtra("MUSICA",mListaPlaylistMusica);
-                intent.putExtra("TITULO",mListaPlaylists.get(0).getmNomePlaylist());
+                intent.putExtra(MAIN_LISTA_MUSICA, (Serializable) mListaPlaylists.get(position).getmPlaylist());
+                intent.putExtra(MAIN_TITULO,mListaPlaylists.get(0).getmNomePlaylist());
 
                 startActivity(intent);
                 finish();
@@ -260,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         mListaPlaylistMusica.add(mListaMusicas.get(11));
         mListaPlaylists.add(new Playlist("Musicas Legais",mListaPlaylistMusica,R.drawable.sweet_child));
 
-        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica = new ArrayList<>();
         mListaPlaylistMusica.add(mListaMusicas.get(12));
         mListaPlaylistMusica.add(mListaMusicas.get(3));
         mListaPlaylistMusica.add(mListaMusicas.get(29));
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         mListaPlaylistMusica.add(mListaMusicas.get(51));
         mListaPlaylists.add(new Playlist("Curtição",mListaPlaylistMusica,R.drawable.sweet_child));
 
-        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica = new ArrayList<>();
         mListaPlaylistMusica.add(mListaMusicas.get(6));
         mListaPlaylistMusica.add(mListaMusicas.get(12));
         mListaPlaylistMusica.add(mListaMusicas.get(18));
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         mListaPlaylistMusica.add(mListaMusicas.get(50));
         mListaPlaylists.add(new Playlist("Sei lá",mListaPlaylistMusica,R.drawable.sweet_child));
 
-        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica = new ArrayList<>();
         mListaPlaylistMusica.add(mListaMusicas.get(3));
         mListaPlaylistMusica.add(mListaMusicas.get(32));
         mListaPlaylistMusica.add(mListaMusicas.get(38));
@@ -287,8 +288,7 @@ public class MainActivity extends AppCompatActivity {
         mListaPlaylistMusica.add(mListaMusicas.get(30));
         mListaPlaylists.add(new Playlist("Meu som",mListaPlaylistMusica,R.drawable.sweet_child));
 
-
-        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica = new ArrayList<>();
         mListaPlaylistMusica.add(mListaMusicas.get(7));
         mListaPlaylistMusica.add(mListaMusicas.get(72));
         mListaPlaylistMusica.add(mListaMusicas.get(78));
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         mListaPlaylistMusica.add(mListaMusicas.get(70));
         mListaPlaylists.add(new Playlist("Weekend",mListaPlaylistMusica,R.drawable.sweet_child));
 
-        mListaPlaylistMusica.clear();
+        mListaPlaylistMusica = new ArrayList<>();
         mListaPlaylistMusica.add(mListaMusicas.get(2));
         mListaPlaylistMusica.add(mListaMusicas.get(22));
         mListaPlaylistMusica.add(mListaMusicas.get(28));

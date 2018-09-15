@@ -16,8 +16,6 @@ import br.com.juliorgm.udamusicplayer.model.Musica;
 public class MusicaAdapter extends RecyclerView.Adapter<MusicaAdapter.ViewHolder> {
     private Context mContext;
     private List<Musica> mListaMusica;
-    private View.OnClickListener listener;
-    private int mItemLayout;
     private static ItemClickListener sItemClickListener;
 
     public MusicaAdapter(Context mContext, List<Musica> mListaMusica) {

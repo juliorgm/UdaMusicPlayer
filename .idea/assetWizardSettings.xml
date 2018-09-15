@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_home_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_music_note_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -46,12 +46,9 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ff4081" />
-                                      <entry key="backgroundLayerName" value="ic_button_play_background_pause" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="C:\Users\Julio\Desktop\unnamed.jpg" />
-                                      <entry key="foregroundLayerName" value="ic_frente_home" />
                                       <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_home" />
                                       <entry key="webIconShape" value="NONE" />
                                     </map>
                                   </option>
